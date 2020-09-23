@@ -5,7 +5,7 @@ times and leverages the full potential of nix. Only works for docker-runners.
 
 ## Use Case
 
-- You don't want to rebuild large dependencies on every run (I am looking at you, CUDA)
+- You don't want to rebuild large dependencies on every run (I am looking at you, [CUDA](https://github.com/NixOS/nixpkgs-channels/blob/nixos-unstable/pkgs/development/compilers/cudatoolkit/common.nix#L235))
 - You want to build large, multi staged derivations which depend eachother
 - You want to share build results across multiple repositories
 
@@ -23,12 +23,12 @@ This enables you to reference the image f.e. by
 2) Execute `copy-nix-store.sh` from this repository on your host machine. This script
 takes the image name as its first and only parameter (the `nixos/nix@hash` combination)
 from which it should copy the nix store. The result is stored in `$CWD/nix-backup`.
-3) Locate your gitlab-runner `config.toml` (see (docs)[https://docs.gitlab.com/runner/configuration/advanced-configuration.html]). Locate the correct (runner.docker)[https://docs.gitlab.com/runner/configuration/advanced-configuration.html#volumes-in-the-runnersdocker-section] section
+3) Locate your gitlab-runner `config.toml` (see [docs](https://docs.gitlab.com/runner/configuration/advanced-configuration.html]). Locate the correct [runner.docker][https://docs.gitlab.com/runner/configuration/advanced-configuration.html#volumes-in-the-runnersdocker-section] section
 (take care: there may be multiple, one for each of your registered repositories).
 4) Update your `volumes` entry to contain two new mount points:
-```
-volumes=["/path/to/nix-backup/nix/store:/nix/store:rw","/path/to/nix-backup/nix/var/nix/db:/nix/var/nix/db:rw"]
-```
+  ```
+  volumes=["/path/to/nix-backup/nix/store:/nix/store:rw","/path/to/nix-backup/nix/var/nix/db:/nix/var/nix/db:rw"]
+  ```
 5) Restart the runner ( by using `gitlab-runner restart`) or wait for it to pickup the changes.
 6) Update the `.gitlab-ci.yml` to only use the image you have pinned above.
 
