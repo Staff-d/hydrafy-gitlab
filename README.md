@@ -8,6 +8,7 @@ times and leverages the full potential of nix. Only works for docker-runners.
 - You don't want to rebuild large dependencies on every run (I am looking at you, [CUDA](https://github.com/NixOS/nixpkgs-channels/blob/nixos-unstable/pkgs/development/compilers/cudatoolkit/common.nix#L235))
 - You want to build large, multi staged derivations which depend eachother
 - You want to share build results across multiple repositories
+- You already have a bunch of gitlab runner and can't be bothered to host a real [hydra](https://github.com/NixOS/hydra)
 
 ## HowTo
 
@@ -32,6 +33,11 @@ from which it should copy the nix store. The result is stored in `$CWD/nix-backu
 5) Restart the runner ( by using `gitlab-runner restart`) or wait for it to pickup the changes.
 6) Update the `.gitlab-ci.yml` to only use the image you have pinned above.
 
+## Upgrading
+
+To update the nixos/nix base image, simply delete your `nix-backup` dir and
+execute `copy-nix-store.sh` again with your new base image. You may need
+to stop your runner before you delete the shared folders and restart it afterwards.
 
 ## Pitfalls
 
