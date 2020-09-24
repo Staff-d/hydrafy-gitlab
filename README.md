@@ -24,18 +24,18 @@ This enables you to reference the image f.e. by
 2) Execute `copy-nix-store.sh` from this repository on your host machine. This script
 takes the image name as its first and only parameter (the `nixos/nix@hash` combination)
 from which it should copy the nix store. The result is stored in `$CWD/nix-backup`.
-3) Locate your gitlab-runner `config.toml` (see [docs](https://docs.gitlab.com/runner/configuration/advanced-configuration.html]). Locate the correct [runner.docker][https://docs.gitlab.com/runner/configuration/advanced-configuration.html#volumes-in-the-runnersdocker-section] section
+3) Locate your gitlab-runner `config.toml` (see [docs](https://docs.gitlab.com/runner/configuration/advanced-configuration.html])) and find the correct [runner.docker](https://docs.gitlab.com/runner/configuration/advanced-configuration.html#volumes-in-the-runnersdocker-section) section
 (take care: there may be multiple, one for each of your registered repositories).
 4) Update your `volumes` entry to contain two new mount points:
   ```
   volumes=["/path/to/nix-backup/nix/store:/nix/store:rw","/path/to/nix-backup/nix/var/nix/db:/nix/var/nix/db:rw"]
   ```
 5) Restart the runner ( by using `gitlab-runner restart`) or wait for it to pickup the changes.
-6) Update the `.gitlab-ci.yml` to only use the image you have pinned above.
+6) Update your `.gitlab-ci.yml` to only use the image you have pinned above.
 
 ## Upgrading
 
-To update the nixos/nix base image, simply delete your `nix-backup` dir and
+To upgrade the nixos/nix base image, simply delete your `nix-backup` dir and
 execute `copy-nix-store.sh` again with your new base image. You may need
 to stop your runner before you delete the shared folders and restart it afterwards.
 
