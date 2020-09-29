@@ -1,4 +1,4 @@
-# [hydrafy-gitlab](https://gitlab.com/griph-dev/hydrafy-gitlab.git)
+# [hydrafy-gitlab](https://github.com/Staff-d/hydrafy-gitlab)
 
 Allows gitlab-runners to share their `/nix` dir and thus improve compilation
 times and leverages the full potential of nix. Only works for docker-runners.
