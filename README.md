@@ -1,19 +1,20 @@
 # [hydrafy-gitlab](https://github.com/Staff-d/hydrafy-gitlab)
 
-Allows gitlab-runners to share their `/nix` dir and thus improve compilation
+Allows a gitlab-runner to share the `/nix` store between builds and thus improve compilation
 times and leverages the full potential of nix. Only works for docker-runners.
 
 ## Use Case
 
 - You don't want to rebuild large dependencies on every run (I am looking at you, [CUDA](https://github.com/NixOS/nixpkgs-channels/blob/nixos-unstable/pkgs/development/compilers/cudatoolkit/common.nix#L235))
-- You want to build large, multi staged derivations which depend eachother
+- You want to build large, multi staged derivations which depend each other
 - You want to share build results across multiple repositories
 - You already have a bunch of gitlab runner and can't be bothered to host a real [hydra](https://github.com/NixOS/hydra)
+- You cannot host your gitlab runner [on a nixos machine](https://gitlab.com/arianvp/nixos-gitlab-runner)
 
 ## HowTo
 
 The gitlab runners still require the [nixos/nix](https://hub.docker.com/r/nixos/nix/tags)
-base image. To share the nix-store you'll have to copy its inital contents to the runner-
+base image. To share the nix-store you'll have to copy its initial contents to the runner-
 host and mount the resulting dir in all docker runners.
 
 To do so, you'll have to follow these steps
